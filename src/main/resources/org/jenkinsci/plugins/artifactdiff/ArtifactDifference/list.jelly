@@ -1,0 +1,52 @@
+<!--
+The MIT License
+
+Copyright (c) 2012 Red Hat, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+<!-- Show form and diff -->
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+  <l:layout title="${it.title} : ${path}">
+    <st:include page="sidepanel.jelly" it="${it.owner}"/>
+    <l:main-panel>
+      <j:set var="rootDir" value="${build.url}" />
+      <j:set var="artifactsDir" value="${build.artifactsDir.canonicalPath}" />
+      <j:set var="otherBuild" value="${build.previousBuild.number}" />
+      ${rootUrl}
+      <table class="sortable bigtable">
+        <tr>
+          <th initialSortDir="down">${%File}</th>
+          <th>${%Diff}</th>
+        </tr>
+        <j:forEach var="artifact" items="${build.artifacts}">
+          <j:set var="filename" value="${it.getFilename(artifact, artifactsDir)}" />
+          <tr>
+            <td>${filename}</td>
+            <td>
+              <a href="/${rootDir}${it.urlName}/${otherBuild}/${filename}?output=html">${%diff}</a>
+            </td>
+          </tr>
+        </j:forEach>
+      </table>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>
