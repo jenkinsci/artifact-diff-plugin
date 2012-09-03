@@ -10,6 +10,21 @@
   <artifactId>artifact-diff-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
+  <name>Artifact diff Plugin for Jenkins-ci</name>
+  <description>This plugin serves diffs of artifacts from different builds.</description>
+  <url>https://wiki.jenkins-ci.org/display/JENKINS/Artifact+Diff+Plaugin</url>
+
+  <developers>
+    <developer>
+      <id>olivergondza</id>
+      <name>Oliver Gondža</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/jenkinsci/artifact-diff-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:jenkinsci/artifact-diff-plugin.git</developerConnection>
+    <url>https://github.com/olivergondza/artifact-diff-plugin</url>
+  </scm>
 
   <!-- get every artifact through repo.jenkins-ci.org, which proxies all the artifacts that we need -->
   <repositories>
