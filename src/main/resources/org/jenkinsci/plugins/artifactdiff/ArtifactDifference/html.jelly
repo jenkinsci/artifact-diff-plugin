@@ -60,34 +60,21 @@ THE SOFTWARE.
           <input type="hidden" name="output" value="html" />
           <f:entry title="Diff Builds">
 
-                        <st:nbsp/>
-                <select name="lhs" onChange="this.form.submit();">
-                  <j:forEach var="build" items="${buildList}" varStatus="current">
-                    <j:choose>
-                      <j:when test="${lhs.number==build.number}">
-                        <option value="${build.number}" selected="SELECTED">${build.number}</option>
-                      </j:when>
-                      <j:otherwise>
-                        <option value="${build.number}">${build.number}</option>
-                      </j:otherwise>
-                    </j:choose>
-                  </j:forEach>
-                </select>
-                <st:nbsp/>
-                <select name="rhs" onChange="this.form.submit();">
-                  <j:forEach var="build" items="${buildList}" varStatus="current">
-                    <j:choose>
-                      <j:when test="${rhs.number==build.number}">
-                        <option value="${build.number}" selected="SELECTED">${build.number}</option>
-                      </j:when>
-                      <j:otherwise>
-                        <option value="${build.number}">${build.number}</option>
-                      </j:otherwise>
-                    </j:choose>
-                  </j:forEach>
-                </select>
+            <st:nbsp/>
+            <select name="lhs" onChange="this.form.submit();">
+              <j:forEach var="build" items="${buildList}" varStatus="current">
+                ${build.result.color}
+                <option value="${build.number}" style="color: ${build.result.color.htmlBaseColor};" selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
+              </j:forEach>
+            </select>
+            <st:nbsp/>
+            <select name="rhs" onChange="this.form.submit();">
+              <j:forEach var="build" items="${buildList}" varStatus="current">
+                <option value="${build.number}" style="color: ${build.result.color.htmlBaseColor};" selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
+              </j:forEach>
+            </select>
 
-              </f:entry>
+          </f:entry>
         </f:form>
         <div id="diff"><!--${diff}</div>-->
           <j:forEach var="line" items="${diff}">
