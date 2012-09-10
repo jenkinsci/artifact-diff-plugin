@@ -59,12 +59,6 @@ public class ArtifactDifferenceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void useNullRun() {
-
-        new ArtifactDifference(run).getLineClass("this is not a diff line");
-    }
-
     @Test
     public void getArtifactListResponse() throws IOException, ServletException {
 

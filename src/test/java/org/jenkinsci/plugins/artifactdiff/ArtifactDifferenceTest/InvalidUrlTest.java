@@ -73,7 +73,6 @@ public class InvalidUrlTest {
         return Arrays.asList(new String[][]{
                 { "/3", "Malformed url" },
                 { "/3.14/README", "Malformed url" },
-//                { "/3/", "Illegal file path" }, ??? Show files that differ between builds ???
                 { "/3/../", "Illegal file path" },
         });
     }

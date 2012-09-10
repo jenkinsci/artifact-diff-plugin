@@ -32,13 +32,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
+
+import jenkins.model.ModelObjectWithContextMenu.ContextMenu;
 
 import org.jenkinsci.plugins.artifactdiff.Response.Exception;
 import org.kohsuke.stapler.StaplerRequest;
@@ -51,18 +49,7 @@ import org.kohsuke.stapler.StaplerResponse;
  */
 public class ArtifactDifference implements Action {
 
-    private static final Map<String, String> decorators = new HashMap<String, String>();
-    static {
-        decorators.put("+", "new");
-        decorators.put("-", "old");
-        decorators.put("@@", "pos");
-        // Match context lines. Everything else is supposed to be matched by previous patterns
-        decorators.put(" ", "con");
-    }
-
     private static final List<String> allowedCommands = Arrays.asList("plain", "html");
-
-    private static final Logger LOGGER = Logger.getLogger(ArtifactDifference.class.getName());
 
     private final Run<?, ?> lhsRun;
 
@@ -98,6 +85,14 @@ public class ArtifactDifference implements Action {
         return lhsRun;
     }
 
+    /**
+     * Do not let doDynamic handle "contextMenu"
+     */
+    public ContextMenu doContextMenu() {
+
+        return null;
+    }
+
     public String getFilename(
             final Run<?, ?>.Artifact artifact, final String artifactDir
     ) throws IOException {
@@ -112,18 +107,6 @@ public class ArtifactDifference implements Action {
         assert artifactPath.startsWith(prefix);
 
         return artifactPath.substring(prefix.length());
-    }
-
-    public String getLineClass(final String line) {
-
-        if (line.isEmpty()) return "con";
-
-        for (final Entry<String, String> dec: decorators.entrySet()) {
-
-            if (line.startsWith(dec.getKey())) return dec.getValue();
-        }
-
-        throw new IllegalArgumentException(line + " does not look like a diff line");
     }
 
     public Response doDynamic(
@@ -150,7 +133,6 @@ public class ArtifactDifference implements Action {
             doDynamic(req, rsp).generateResponse(req, rsp, node);
         } catch (Response.Exception ex) {
 
-            //LOGGER.log(Level.INFO, ex.getMessage(), ex);
             ex.send(rsp);
         }
     }

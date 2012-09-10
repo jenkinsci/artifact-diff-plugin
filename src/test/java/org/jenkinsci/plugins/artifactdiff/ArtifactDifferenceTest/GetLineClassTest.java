@@ -25,25 +25,25 @@ package org.jenkinsci.plugins.artifactdiff.ArtifactDifferenceTest;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import hudson.model.Run;
+import static org.mockito.Mockito.mock;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jenkinsci.plugins.artifactdiff.ArtifactDifference;
+import javax.servlet.ServletException;
+
+import org.jenkinsci.plugins.artifactdiff.DiffResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 
 @RunWith(Parameterized.class)
 public class GetLineClassTest {
 
-    @Mock private Run<?, ?> run;
-
-    private ArtifactDifference diff;
+    private DiffResponse.Html htmlResponse;
 
     private final String line;
     private final String className;
@@ -71,15 +71,14 @@ public class GetLineClassTest {
     }
 
     @Before
-    public void initMocks() {
+    public void initMocks() throws IOException, ServletException {
 
-        MockitoAnnotations.initMocks(this);
-        diff = new ArtifactDifference(run);
+        htmlResponse = mock(DiffResponse.Html.class, Mockito.CALLS_REAL_METHODS);
     }
 
     @Test
     public void getLineClass() {
 
-        assertThat(diff.getLineClass(line), equalTo(className));
+        assertThat(htmlResponse.getLineClass(line), equalTo(className));
     }
 }

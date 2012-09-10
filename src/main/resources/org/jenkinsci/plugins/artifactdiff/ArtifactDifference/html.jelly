@@ -30,13 +30,13 @@ THE SOFTWARE.
     <l:header>
     <style>
       #diffbox #diff {
-                background: #eee;
-                padding: 3px;
-                font-family: monospace;
+        background: #eee;
+        padding: 3px;
+        font-family: monospace;
       }
 
       #diffbox #diff div {
-                 white-space: pre;
+         white-space: pre;
       }
 
       #diffbox #diff .new {
@@ -55,30 +55,31 @@ THE SOFTWARE.
     <l:main-panel>
       <div id="diffbox">
         <h1>diff #${lhs.number} #${rhs.number} ${path}</h1>
-        <a href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">plaintext diff</a>
+        <a href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
         <f:form method="GET" name="diff">
           <input type="hidden" name="output" value="html" />
           <f:entry title="Diff Builds">
+          <j:set var="color" value="${build.result.color.htmlBaseColor}" />
 
             <st:nbsp/>
             <select name="lhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
                 ${build.result.color}
-                <option value="${build.number}" style="color: ${build.result.color.htmlBaseColor};" selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
+                <option value="${build.number}" style="color: ${color};" selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
             <st:nbsp/>
             <select name="rhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
-                <option value="${build.number}" style="color: ${build.result.color.htmlBaseColor};" selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
+                <option value="${build.number}" style="color: ${color};" selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
 
           </f:entry>
         </f:form>
-        <div id="diff"><!--${diff}</div>-->
+        <div id="diff">
           <j:forEach var="line" items="${diff}">
-            <div class="${it.getLineClass(line)}">${line}</div>
+            <div class="${outcome.getLineClass(line)}">${line}</div>
           </j:forEach>
         </div>
 

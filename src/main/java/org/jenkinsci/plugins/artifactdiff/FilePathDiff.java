@@ -26,6 +26,7 @@ package org.jenkinsci.plugins.artifactdiff;
 import hudson.FilePath;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -116,6 +117,9 @@ public class FilePathDiff {
             try {
 
                 return src.read();
+            } catch (FileNotFoundException ex) {
+
+                return null;
             } catch (IOException ex) {
 
                 LOGGER.info(ex.toString());

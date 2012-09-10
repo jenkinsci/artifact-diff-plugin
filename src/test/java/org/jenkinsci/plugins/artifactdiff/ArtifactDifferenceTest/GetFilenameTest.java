@@ -39,13 +39,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
 
 @RunWith(Parameterized.class)
 public class GetFilenameTest {
-
-    @Mock private Run<?, ?> run;
 
     private ArtifactDifference diff;
 
@@ -88,8 +85,7 @@ public class GetFilenameTest {
     @Before
     public void initMocks() {
 
-        MockitoAnnotations.initMocks(this);
-        diff = new ArtifactDifference(run);
+        diff = mock(ArtifactDifference.class, Mockito.CALLS_REAL_METHODS);
     }
 
     @Test

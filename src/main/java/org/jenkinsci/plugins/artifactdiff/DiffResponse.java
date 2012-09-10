@@ -29,7 +29,10 @@ import hudson.util.RunList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -182,6 +185,15 @@ public abstract class DiffResponse extends Response {
      */
     public static class Html extends DiffResponse {
 
+        private static final Map<String, String> decorators = new HashMap<String, String>();
+        static {
+            decorators.put("+", "new");
+            decorators.put("-", "old");
+            decorators.put("@@", "pos");
+            // Match context lines. Everything else is supposed to be matched by previous patterns
+            decorators.put(" ", "con");
+        }
+
         public Html(
                 final ArtifactDifference diff,
                 final StaplerRequest req,
@@ -191,17 +203,29 @@ public abstract class DiffResponse extends Response {
             super(diff, req, rsp);
         }
 
-        public void generate(final List<String> diff) throws IOException, ServletException {
+        public void generate(final List<String> lines) throws IOException, ServletException {
 
             handleRequest();
 
             req.setAttribute("lhs", lhsRun);
             req.setAttribute("rhs", rhsRun);
             req.setAttribute("buildList", getRelevantBuilds(rhsRun));
-            req.setAttribute("diff", diff);
+            req.setAttribute("diff", lines);
             req.setAttribute("outcome", this);
             req.setAttribute("path", path);
-            req.getView(this.diff,"html.jelly").forward(req, rsp);
+            req.getView(diff,"html.jelly").forward(req, rsp);
+        }
+
+        public String getLineClass(final String line) {
+
+            if (line.isEmpty()) return "con";
+
+            for (final Entry<String, String> dec: decorators.entrySet()) {
+
+                if (line.startsWith(dec.getKey())) return dec.getValue();
+            }
+
+            throw new IllegalArgumentException(line + " does not look like a diff line");
         }
 
         /**
@@ -217,9 +241,10 @@ public abstract class DiffResponse extends Response {
             final RunList<Run<?, ?>> relevantBuilds = new RunList<Run<?, ?>>();
             for (final Run<?, ?> build: currentBuilds) {
 
-                if (!hasArtifact(build, artifactDir)) continue;
+                if (hasArtifact(build, artifactDir) || build.equals(run)) {
 
-                relevantBuilds.add(build);
+                  relevantBuilds.add(build);
+                }
             }
 
             return relevantBuilds;
