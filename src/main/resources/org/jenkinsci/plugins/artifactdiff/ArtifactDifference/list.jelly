@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
 
-<!-- Show form and diff -->
+<!-- Show directory listing -->
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:i="jelly:fmt">
   <l:layout title="${it.title} : ${path}">
@@ -30,20 +30,27 @@ THE SOFTWARE.
     <l:main-panel>
       <j:set var="rootDir" value="${build.url}" />
       <j:set var="artifactsDir" value="${build.artifactsDir.canonicalPath}" />
-      <j:set var="otherBuild" value="${build.previousBuild.number}" />
+            
       ${rootUrl}
       <table class="sortable bigtable">
         <tr>
           <th initialSortDir="down">${%File}</th>
-          <th>${%Diff}</th>
+          <j:forEach var="entry" items="${representatives.entrySet()}">
+            <th>Last ${entry.key}</th>
+          </j:forEach>
         </tr>
         <j:forEach var="artifact" items="${build.artifacts}">
           <j:set var="filename" value="${it.getFilename(artifact, artifactsDir)}" />
           <tr>
             <td>${filename}</td>
-            <td>
-              <a href="/${rootDir}${it.urlName}/${otherBuild}/${filename}?output=html">${%diff}</a>
-            </td>
+            <j:forEach var="entry" items="${representatives.entrySet()}">
+              <j:set var="otherBuild" value="${entry.value}" />
+              <j:set var="text" value="${entry.key}" />
+              <td>
+                <a href="/${rootDir}${it.urlName}/${otherBuild.number}/${filename}?output=html"
+                   title="Diff #${build.number} #${otherBuild.number}" style="color: ${otherBuild.result.color.htmlBaseColor};">${text}</a>
+              </td>
+            </j:forEach>
           </tr>
         </j:forEach>
       </table>

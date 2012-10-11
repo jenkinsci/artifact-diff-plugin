@@ -213,7 +213,7 @@ public abstract class DiffResponse extends Response {
             req.setAttribute("diff", lines);
             req.setAttribute("outcome", this);
             req.setAttribute("path", path);
-            req.getView(diff,"html.jelly").forward(req, rsp);
+            req.getView(diff, "html.jelly").forward(req, rsp);
         }
 
         public String getLineClass(final String line) {
@@ -237,10 +237,10 @@ public abstract class DiffResponse extends Response {
 
             final String artifactDir = run.getArtifactsDir().getCanonicalPath();
 
-            final RunList<?> currentBuilds = run.getParent().getBuilds();
             final RunList<Run<?, ?>> relevantBuilds = new RunList<Run<?, ?>>();
-            for (final Run<?, ?> build: currentBuilds) {
+            for (final Run<?, ?> build: run.getParent().getBuilds()) {
 
+                // Use current build and all the other builds that has artifacts
                 if (hasArtifact(build, artifactDir) || build.equals(run)) {
 
                   relevantBuilds.add(build);

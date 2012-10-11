@@ -23,7 +23,12 @@
  */
 package org.jenkinsci.plugins.artifactdiff;
 
+import hudson.model.Job;
+import hudson.model.Run;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +65,31 @@ public abstract class Response implements HttpResponse {
         ) throws IOException, ServletException {
 
             req.setAttribute("build", diff.getOwner());
+            req.setAttribute("representatives", getRepresentativeBuilds());
             req.getView(diff, "list.jelly").forward(req, rsp);
+        }
+
+        private Map<String, Run<?, ?>> getRepresentativeBuilds() {
+
+            final Job<?, ?> project = diff.getOwner().getParent();
+
+            final Map<String, Run<?, ?>> c = new HashMap<String, Run<?, ?>>(5);
+            c.put("successful", project.getLastSuccessfulBuild());
+            c.put("stable", project.getLastStableBuild());
+            c.put("unstable", project.getLastUnstableBuild());
+            c.put("unsuccessful", project.getLastUnsuccessfulBuild());
+            c.put("failed", project.getLastFailedBuild());
+
+            final Map<String, Run<?, ?>> r = new HashMap<String, Run<?, ?>>(5);
+            for (final Map.Entry<String, Run<?, ?>> entry: c.entrySet()) {
+
+                if (entry.getValue() == null) continue;
+                if (entry.getValue().equals(diff.getOwner())) continue;
+
+                r.put(entry.getKey(), entry.getValue());
+            }
+
+            return r;
         }
     }
 

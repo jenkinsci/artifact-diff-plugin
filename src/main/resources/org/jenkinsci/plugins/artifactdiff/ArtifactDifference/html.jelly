@@ -29,6 +29,15 @@ THE SOFTWARE.
     <st:include page="sidepanel.jelly" it="${it.owner}"/>
     <l:header>
     <style>
+      #diffbox td {
+        vertical-align: middle;
+      }
+      
+      #diffbox .plaintext-toggle {
+        floar: left;
+        display: block;
+      }
+    
       #diffbox #diff {
         background: #eee;
         padding: 3px;
@@ -54,29 +63,29 @@ THE SOFTWARE.
   </l:header>
     <l:main-panel>
       <div id="diffbox">
-        <h1>diff #${lhs.number} #${rhs.number} ${path}</h1>
-        <a href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
+        <h1>diff <a href="/${lhs.url}">#${lhs.number}</a><st:nbsp/><a href="/${rhs.url}">#${rhs.number}</a> ${path}</h1>
         <f:form method="GET" name="diff">
           <input type="hidden" name="output" value="html" />
           <f:entry title="Diff Builds">
-          <j:set var="color" value="${build.result.color.htmlBaseColor}" />
-
+          
             <st:nbsp/>
             <select name="lhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
-                ${build.result.color}
+                <j:set var="color" value="${build.result.color.htmlBaseColor}" />
                 <option value="${build.number}" style="color: ${color};" selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
             <st:nbsp/>
             <select name="rhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
+                <j:set var="color" value="${build.result.color.htmlBaseColor}" />
                 <option value="${build.number}" style="color: ${color};" selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
-
+            
           </f:entry>
         </f:form>
+        <a class="plaintext-toggle" href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
         <div id="diff">
           <j:forEach var="line" items="${diff}">
             <div class="${outcome.getLineClass(line)}">${line}</div>
