@@ -18,6 +18,7 @@
     <developer>
       <id>olivergondza</id>
       <name>Oliver Gondža</name>
+      <email>ogondza@gmail.com</email>
     </developer>
   </developers>
   <scm>
@@ -39,6 +40,10 @@
       <url>http://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <dependencies>
     <dependency>
