@@ -25,10 +25,10 @@ package org.jenkinsci.plugins.artifactdiff;
 
 import hudson.FilePath;
 import hudson.model.Run;
-import hudson.util.RunList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -233,11 +233,11 @@ public abstract class DiffResponse extends Response {
          *
          * <p>Builds that has an artifact on current filepath
          */
-        private RunList<?> getRelevantBuilds(Run<?, ?> run) throws IOException {
+        private List<?> getRelevantBuilds(Run<?, ?> run) throws IOException {
 
             final String artifactDir = run.getArtifactsDir().getCanonicalPath();
 
-            final RunList<Run<?, ?>> relevantBuilds = new RunList<Run<?, ?>>();
+            final List<Run<?, ?>> relevantBuilds = new ArrayList<Run<?, ?>>();
             for (final Run<?, ?> build: run.getParent().getBuilds()) {
 
                 // Use current build and all the other builds that has artifacts
