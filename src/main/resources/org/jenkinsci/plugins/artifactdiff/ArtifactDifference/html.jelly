@@ -32,12 +32,12 @@ THE SOFTWARE.
       #diffbox td {
         vertical-align: middle;
       }
-      
+
       #diffbox .plaintext-toggle {
         floar: left;
         display: block;
       }
-    
+
       #diffbox #diff {
         background: #eee;
         padding: 3px;
@@ -67,25 +67,28 @@ THE SOFTWARE.
         <f:form method="GET" name="diff">
           <input type="hidden" name="output" value="html" />
           <f:entry title="Diff Builds">
-          
+
             <st:nbsp/>
             <select name="lhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
                 <j:set var="color" value="${build.result.color.htmlBaseColor}" />
-                <option value="${build.number}" style="color: ${color};" selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
+                <option value="${build.number}" style="color: ${color};"
+                      selected="${lhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
             <st:nbsp/>
             <select name="rhs" onChange="this.form.submit();">
               <j:forEach var="build" items="${buildList}" varStatus="current">
                 <j:set var="color" value="${build.result.color.htmlBaseColor}" />
-                <option value="${build.number}" style="color: ${color};" selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
+                <option value="${build.number}" style="color: ${color};"
+                      selected="${rhs.number==build.number ? 'selected' : null}">${build.number}</option>
               </j:forEach>
             </select>
-            
+
           </f:entry>
         </f:form>
-        <a class="plaintext-toggle" href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
+        <a class="plaintext-toggle"
+            href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
         <div id="diff">
           <j:forEach var="line" items="${diff}">
             <div class="${outcome.getLineClass(line)}">${line}</div>
