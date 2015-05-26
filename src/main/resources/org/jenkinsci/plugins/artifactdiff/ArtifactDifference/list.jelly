@@ -47,7 +47,7 @@ THE SOFTWARE.
               <j:set var="otherBuild" value="${entry.value}" />
               <j:set var="text" value="${entry.key}" />
               <td>
-                <a href="/${rootDir}${it.urlName}/${otherBuild.number}/${filename}?output=html"
+                <a href="${rootURL}/${rootDir}${it.urlName}/${otherBuild.number}/${filename}?output=html"
                     title="Diff #${build.number} #${otherBuild.number}"
                     style="color: ${otherBuild.result.color.htmlBaseColor};">${text}</a>
               </td>

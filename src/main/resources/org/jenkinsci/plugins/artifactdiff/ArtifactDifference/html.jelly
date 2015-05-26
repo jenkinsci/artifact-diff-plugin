@@ -63,7 +63,7 @@ THE SOFTWARE.
   </l:header>
     <l:main-panel>
       <div id="diffbox">
-        <h1>diff <a href="/${lhs.url}">#${lhs.number}</a><st:nbsp/><a href="/${rhs.url}">#${rhs.number}</a> ${path}</h1>
+        <h1>diff <a href="${rootURL}/${lhs.url}">#${lhs.number}</a><st:nbsp/><a href="${rootURL}/${rhs.url}">#${rhs.number}</a> ${path}</h1>
         <f:form method="GET" name="diff">
           <input type="hidden" name="output" value="html" />
           <f:entry title="Diff Builds">
@@ -88,7 +88,7 @@ THE SOFTWARE.
           </f:entry>
         </f:form>
         <a class="plaintext-toggle"
-            href="/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
+            href="${rootURL}/${lhs.url}${it.urlName}/${rhs.number}/${path}?output=plain">show plaintext diff</a>
         <div id="diff">
           <j:forEach var="line" items="${diff}">
             <div class="${outcome.getLineClass(line)}">${line}</div>
