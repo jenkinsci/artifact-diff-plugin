@@ -104,7 +104,7 @@ public class ArtifactDifference implements Action {
 
         final String artifactPath = artifact.getFile().getCanonicalPath();
 
-        assert artifactPath.startsWith(prefix);
+        assert artifact.getFile().getCanonicalFile().toPath().startsWith(prefix);
 
         return artifactPath.substring(prefix.length());
     }
